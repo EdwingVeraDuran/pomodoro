@@ -14,6 +14,7 @@ class PomodoroApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadcnApp(
+      title: 'Pomodoro',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: ColorSchemes.lightRose(), radius: 1),
       scaling: AdaptiveScaling(1.2),

@@ -63,11 +63,13 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       _timer?.cancel();
 
       await _audioPlayer.play(
-        AssetSource('sounds/notification.wav'),
-        volume: 1,
+        AssetSource('sounds/notification.mp3'),
+        volume: .3,
       );
 
       emit(TimerState(remainingSeconds: 0, isRunning: false, mode: state.mode));
+
+      add(ResetTimer());
     } else {
       emit(
         TimerState(
