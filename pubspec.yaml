@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.1
   intl: ^0.20.2
+  percent_indicator: ^4.2.5
+  shadcn_flutter: ^0.0.36
 
 dev_dependencies:
   flutter_test:

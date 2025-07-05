@@ -1,13 +1,23 @@
 import 'package:intl/intl.dart';
+import 'package:pomodoro/bloc/timer_mode.dart';
 
 class TimerState {
   final int remainingSeconds;
   final bool isRunning;
+  final TimerMode mode;
 
-  TimerState({required this.remainingSeconds, required this.isRunning});
+  TimerState({
+    required this.remainingSeconds,
+    required this.isRunning,
+    required this.mode,
+  });
 
   factory TimerState.initial() {
-    return TimerState(remainingSeconds: 25 * 60, isRunning: false);
+    return TimerState(
+      remainingSeconds: 25 * 60,
+      isRunning: false,
+      mode: TimerMode.pomodoro,
+    );
   }
 
   String get formattedTime {
@@ -17,5 +27,5 @@ class TimerState {
     return formatter.format(date);
   }
 
-  double get progress => 1 - (remainingSeconds / (25 * 60));
+  double get progress => 1 - (remainingSeconds / mode.duration);
 }
