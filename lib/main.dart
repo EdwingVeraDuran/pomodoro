@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pomodoro/bloc/timer_bloc.dart';
+import 'package:pomodoro/home.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const PomodoroApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class PomodoroApp extends StatelessWidget {
+  const PomodoroApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: BlocProvider<TimerBloc>(create: (_) => TimerBloc(), child: Home()),
     );
   }
 }
