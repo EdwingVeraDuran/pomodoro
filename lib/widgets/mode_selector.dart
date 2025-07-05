@@ -33,12 +33,12 @@ class ModeSelector extends StatelessWidget {
         );
       },
       itemBuilder: (context, value) {
-        return Text(value.label);
+        return Text(value.label, textAlign: TextAlign.center);
       },
       onChanged: (value) {
         context.read<TimerBloc>().add(ChangeMode(value!));
       },
-      constraints: BoxConstraints(minWidth: 160),
+      constraints: BoxConstraints(minWidth: 200),
     );
   }
 }
