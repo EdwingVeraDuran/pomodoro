@@ -6,7 +6,7 @@ extension TimerModeExtension on TimerMode {
       case TimerMode.pomodoro:
         return 25 * 60;
       case TimerMode.shortBreak:
-        return 5 * 60;
+        return 5 * 1;
       case TimerMode.longBreak:
         return 15 * 60;
     }

@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro/bloc/timer_event.dart';
 import 'package:pomodoro/bloc/timer_mode.dart';
 import 'package:pomodoro/bloc/timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
   Timer? _timer;
 
   TimerBloc() : super(TimerState.initial()) {
@@ -54,14 +56,27 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     );
   }
 
-  void _onTick(Tick event, Emitter<TimerState> emit) {
-    emit(
-      TimerState(
-        remainingSeconds: state.remainingSeconds - 1,
-        isRunning: true,
-        mode: state.mode,
-      ),
-    );
+  void _onTick(Tick event, Emitter<TimerState> emit) async {
+    final newTime = state.remainingSeconds - 1;
+
+    if (newTime <= 0) {
+      _timer?.cancel();
+
+      await _audioPlayer.play(
+        AssetSource('sounds/notification.wav'),
+        volume: 1,
+      );
+
+      emit(TimerState(remainingSeconds: 0, isRunning: false, mode: state.mode));
+    } else {
+      emit(
+        TimerState(
+          remainingSeconds: newTime,
+          isRunning: true,
+          mode: state.mode,
+        ),
+      );
+    }
   }
 
   void _onChangeMode(ChangeMode event, Emitter<TimerState> emit) {

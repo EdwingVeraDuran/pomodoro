@@ -4,6 +4,7 @@ import 'package:pomodoro/home.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const PomodoroApp());
 }
 
