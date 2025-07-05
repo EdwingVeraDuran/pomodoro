@@ -128,16 +128,29 @@ bool Win32Window::Create(const std::wstring& title,
   const wchar_t* window_class =
       WindowClassRegistrar::GetInstance()->GetWindowClass();
 
-  const POINT target_point = {static_cast<LONG>(origin.x),
-                              static_cast<LONG>(origin.y)};
-  HMONITOR monitor = MonitorFromPoint(target_point, MONITOR_DEFAULTTONEAREST);
+  HMONITOR monitor = MonitorFromPoint({0, 0}, MONITOR_DEFAULTTOPRIMARY);
+  MONITORINFO monitor_info = {};
+  monitor_info.cbSize = sizeof(monitor_info);
+  GetMonitorInfo(monitor, &monitor_info);
+
   UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
   double scale_factor = dpi / 96.0;
 
+  // Tamaño deseado de la ventana (en píxeles lógicos)
+  int width = Scale(size.width, scale_factor);
+  int height = Scale(size.height, scale_factor);
+
+  // Calcular posición centrada
+  int screen_width = monitor_info.rcWork.right - monitor_info.rcWork.left;
+  int screen_height = monitor_info.rcWork.bottom - monitor_info.rcWork.top;
+
+  int x = monitor_info.rcWork.left + (screen_width - width) / 2;
+  int y = monitor_info.rcWork.top + (screen_height - height) / 2;
+
+
   HWND window = CreateWindow(
       window_class, title.c_str(), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-      Scale(origin.x, scale_factor), Scale(origin.y, scale_factor),
-      Scale(size.width, scale_factor), Scale(size.height, scale_factor),
+      x, y, width, height,
       nullptr, nullptr, GetModuleHandle(nullptr), this);
 
   if (!window) {
